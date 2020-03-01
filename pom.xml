@@ -8,5 +8,12 @@
     <artifactId>dropbox-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.dropbox.core</groupId>
+            <artifactId>dropbox-core-sdk</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+    </dependencies>
 
 </project>
