@@ -1,12 +1,18 @@
 package gateway;
 
 import com.dropbox.core.*;
+import com.dropbox.core.v2.DbxClientV2;
 import utils.ConsoleUtils;
 
 public class DropBoxGateway {
 
+  public static DbxRequestConfig dbxRequestConfig;
+
+  static {
+    dbxRequestConfig = DbxRequestConfig.newBuilder("sample-app/1.0").build();
+  }
+
   public static String authorize(String key, String secret){
-    DbxRequestConfig dbxRequestConfig = DbxRequestConfig.newBuilder("sample-app/1.0").build();
     DbxAppInfo dbxAppInfo = new DbxAppInfo(key,secret);
     DbxWebAuth dbxWebAuth = new DbxWebAuth(dbxRequestConfig,dbxAppInfo);
 
@@ -29,5 +35,9 @@ public class DropBoxGateway {
       throw new RuntimeException("Error in DbxWebAuth.authorize: " + ex.getMessage());
     }
     return authFinish.getAccessToken();
+  }
+
+  public static DbxClientV2 getClient(String accessToken){
+    return new DbxClientV2(dbxRequestConfig,accessToken);
   }
 }
