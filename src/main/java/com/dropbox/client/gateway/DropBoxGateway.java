@@ -1,8 +1,8 @@
-package gateway;
+package com.dropbox.client.gateway;
 
 import com.dropbox.core.*;
 import com.dropbox.core.v2.DbxClientV2;
-import utils.ConsoleUtils;
+import com.dropbox.client.utils.ConsoleUtils;
 
 public class DropBoxGateway {
 
