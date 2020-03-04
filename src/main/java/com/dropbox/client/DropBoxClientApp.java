@@ -67,7 +67,7 @@ public class DropBoxClientApp {
 
       while (true) {
         for (Metadata metadata : result.getEntries()) {
-          System.out.println(metadata.getPathLower() + "    :" + metadata.);
+          System.out.println(metadata.getPathLower() + "    :" + metadata.toStringMultiline());
         }
 
         if (!result.getHasMore()) {
