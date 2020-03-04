@@ -52,7 +52,7 @@ public class DropBoxClientApp {
 
     } else if (LIST.equals(args[0])) {
 
-      boolean isPathGiven = args.length>3;
+      boolean isPathGiven = args.length==3;
 
       if(args.length < 2){
         System.out.println("Please provide access token");
