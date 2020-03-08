@@ -3,14 +3,13 @@ package com.dropbox.client;
 import com.dropbox.client.constant.Command;
 import com.dropbox.client.service.DropBoxClientConsoleApp;
 import com.dropbox.client.service.impl.DropBoxClientConsoleAppImpl;
-import com.dropbox.core.DbxException;
 
 public class DropBoxClient {
 
   private static DropBoxClientConsoleApp dropBoxClientConsoleApp =
       DropBoxClientConsoleAppImpl.getInstance();
 
-  public static void main(String[] args) throws DbxException {
+  public static void main(String[] args){
 
     if (validatedArgument(args, 1, "Please give command")) return;
 

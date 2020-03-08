@@ -26,4 +26,8 @@ public enum Command {
   public static Command getCommand(String code) {
     return commands.get(code);
   }
+
+  public String getCode() {
+    return code;
+  }
 }

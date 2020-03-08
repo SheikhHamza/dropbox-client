@@ -20,6 +20,7 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
   private static final String DEFAULT_USER_LOCALE = Locale.getDefault().toString();
   private static DropBoxClientConsoleApp dropBoxClientConsoleApp = null;
   private DropBoxGateway dropBoxGateway;
+  private DbxClientV2 dbxClientV2;
   private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 
   private DropBoxClientConsoleAppImpl(DropBoxGateway dropBoxGateway) {
@@ -31,29 +32,6 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
       dropBoxClientConsoleApp = new DropBoxClientConsoleAppImpl(DropBoxGatewayImpl.getInstance());
     }
     return dropBoxClientConsoleApp;
-  }
-
-  private static void printClientInfo(FullAccount fullAccount) {
-    System.out.println("--------------------------------------------------------");
-    System.out.println("User ID:      " + fullAccount.getAccountId());
-    System.out.println("Display Name: " + fullAccount.getName().getDisplayName());
-    System.out.println(
-        "Name:         "
-            + fullAccount.getName().getGivenName()
-            + " "
-            + fullAccount.getName().getSurname()
-            + " "
-            + fullAccount.getName().getFamiliarName());
-    System.out.println(
-        "Email:        "
-            + fullAccount.getEmail()
-            + " "
-            + "("
-            + (fullAccount.getEmailVerified() ? "Verified" : "")
-            + ")");
-    System.out.println("Country:      " + fullAccount.getCountry());
-    System.out.println("Referral link " + fullAccount.getReferralLink());
-    System.out.println("--------------------------------------------------------");
   }
 
   @Override
@@ -71,8 +49,8 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
 
   @Override
   public void outPutClientFullAccount(String accessToken, String locale) {
-    DbxClientV2 dbxClientV2 = dropBoxGateway.getClient(accessToken, checkUserLocale(locale));
     try {
+      dbxClientV2 = dropBoxGateway.getClient(accessToken, checkUserLocale(locale));
       printClientInfo(dbxClientV2.users().getCurrentAccount());
     } catch (Exception e) {
       System.out.println(e.getLocalizedMessage());
@@ -81,11 +59,8 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
 
   @Override
   public void outPutDirectoryInfo(String accessToken, String path, String locale) {
-
-    DbxClientV2 dbxClientV2 = dropBoxGateway.getClient(accessToken, checkUserLocale(locale));
-
     try {
-
+      dbxClientV2 = dropBoxGateway.getClient(accessToken, checkUserLocale(locale));
       Metadata rootMetaData = dbxClientV2.files().getMetadata(path);
       System.out.println("--------------------------------------------------------");
       System.out.println(printFileOrFolderInfo(rootMetaData));
@@ -104,6 +79,30 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
       System.out.println(e.getLocalizedMessage());
     }
   }
+
+  private static void printClientInfo(FullAccount fullAccount) {
+    System.out.println("--------------------------------------------------------");
+    System.out.println("User ID:      " + fullAccount.getAccountId());
+    System.out.println("Display Name: " + fullAccount.getName().getDisplayName());
+    System.out.println(
+            "Name:         "
+                    + fullAccount.getName().getGivenName()
+                    + " "
+                    + fullAccount.getName().getSurname()
+                    + " "
+                    + fullAccount.getName().getFamiliarName());
+    System.out.println(
+            "Email:        "
+                    + fullAccount.getEmail()
+                    + " "
+                    + "("
+                    + (fullAccount.getEmailVerified() ? "Verified" : "")
+                    + ")");
+    System.out.println("Country:      " + fullAccount.getCountry());
+    System.out.println("Referral link " + fullAccount.getReferralLink());
+    System.out.println("--------------------------------------------------------");
+  }
+
 
   private String checkUserLocale(String locale) {
     locale = (locale == null || locale.isEmpty()) ? DEFAULT_USER_LOCALE : locale;
