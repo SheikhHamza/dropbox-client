@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 public class DropBoxGatewayImpl implements DropBoxGateway {
 
-  private static final DbxRequestConfig dbxRequestConfig;
+  private static final String CLIENT_IDENTIFIER = "sample-app/1.0";
   private static DropBoxGateway dropBoxGateway = null;
 
   private DropBoxGatewayImpl() {}
@@ -22,14 +22,10 @@ public class DropBoxGatewayImpl implements DropBoxGateway {
     return dropBoxGateway;
   }
 
-  static {
-    dbxRequestConfig = DbxRequestConfig.newBuilder("sample-app/1.0").build();
-  }
-
   @Override
-  public String authorize(String key, String secret) throws DbxException {
+  public String authorize(String key, String secret, String locale) throws DbxException {
     DbxAppInfo dbxAppInfo = new DbxAppInfo(key, secret);
-    DbxWebAuth dbxWebAuth = new DbxWebAuth(dbxRequestConfig, dbxAppInfo);
+    DbxWebAuth dbxWebAuth = new DbxWebAuth(getDbxRequestConfig(locale), dbxAppInfo);
 
     DbxWebAuth.Request request = DbxWebAuth.newRequestBuilder().withNoRedirect().build();
 
@@ -48,11 +44,11 @@ public class DropBoxGatewayImpl implements DropBoxGateway {
   }
 
   @Override
-  public DbxClientV2 getClient(String accessToken) {
-    return new DbxClientV2(dbxRequestConfig, accessToken);
+  public DbxClientV2 getClient(String accessToken, String locale) {
+    return new DbxClientV2(getDbxRequestConfig(locale), accessToken);
   }
 
-  private String readInput(){
+  private String readInput() {
     String inputString = null;
     try {
       inputString = new BufferedReader(new InputStreamReader(System.in)).readLine();
@@ -60,5 +56,9 @@ public class DropBoxGatewayImpl implements DropBoxGateway {
       System.out.println(e.getLocalizedMessage());
     }
     return inputString;
+  }
+
+  private DbxRequestConfig getDbxRequestConfig(String locale) {
+    return DbxRequestConfig.newBuilder(CLIENT_IDENTIFIER).withUserLocale(locale).build();
   }
 }
