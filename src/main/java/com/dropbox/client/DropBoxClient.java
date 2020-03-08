@@ -9,7 +9,7 @@ public class DropBoxClient {
   private static DropBoxClientConsoleApp dropBoxClientConsoleApp =
       DropBoxClientConsoleAppImpl.getInstance();
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
 
     if (validatedArgument(args, 1, "Please give command")) return;
 
