@@ -32,7 +32,7 @@ public class DropBoxGatewayImpl implements DropBoxGateway {
     String authorizeUrl = dbxWebAuth.authorize(request);
     System.out.println("1. Go to " + authorizeUrl);
     System.out.println("2. Click Allow (you might have to log in first).");
-    System.out.println("3. Copy the authorization code.;");
+    System.out.println("3. Copy the authorization code.");
     System.out.println("Enter the authorization code here: ");
 
     String code = readInput();

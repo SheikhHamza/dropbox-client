@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Locale;
 
 public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
@@ -66,7 +65,7 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
       System.out.println(e.getLocalizedMessage());
       return;
     }
-    System.out.println("Your AccessToken");
+    System.out.println("Your accessToken: ");
     System.out.println(accessToken);
   }
 
@@ -86,17 +85,19 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
     DbxClientV2 dbxClientV2 = dropBoxGateway.getClient(accessToken, checkUserLocale(locale));
 
     try {
-      System.out.println("--------------------------------------------------------");
 
       Metadata rootMetaData = dbxClientV2.files().getMetadata(path);
+      System.out.println("--------------------------------------------------------");
       System.out.println(printFileOrFolderInfo(rootMetaData));
 
-      if(rootMetaData instanceof FolderMetadata){
-      ListFolderResult result = dbxClientV2.files().listFolder(path);
-      result.getEntries().forEach(metadata -> {
-        System.out.println("  - "+printFileOrFolderInfo(metadata));
-      });
-
+      if (rootMetaData instanceof FolderMetadata) {
+        ListFolderResult result = dbxClientV2.files().listFolder(path);
+        result
+            .getEntries()
+            .forEach(
+                metadata -> {
+                  System.out.println("  - " + printFileOrFolderInfo(metadata));
+                });
       }
       System.out.println("--------------------------------------------------------");
     } catch (Exception e) {
@@ -116,16 +117,17 @@ public class DropBoxClientConsoleAppImpl implements DropBoxClientConsoleApp {
 
   private String printFileOrFolderInfo(Metadata metadata) {
     if (metadata instanceof FolderMetadata) {
-      return metadata.getPathDisplay() + "\t\t: dir";
+      return "/" + metadata.getName() + "  : dir";
     } else if (metadata instanceof FileMetadata) {
       FileMetadata fileMetadata = (FileMetadata) metadata;
-      return metadata.getPathDisplay()
-          + "\t\t: file,\t"
+      return "/"
+          + metadata.getName()
+          + "  : file, "
           + FileUtils.byteCountToDisplaySize(fileMetadata.getSize())
-          + ",\t"
+          + ",  "
           + getMimeType(fileMetadata.getName())
-          + ",\t"
-          + "modified at:\t"
+          + ",  "
+          + "modified at: "
           + simpleDateFormat.format(fileMetadata.getClientModified());
     }
     return "";

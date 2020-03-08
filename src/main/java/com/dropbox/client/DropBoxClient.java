@@ -39,7 +39,7 @@ public class DropBoxClient {
         }
       case LIST:
         {
-          if (validatedArgument(args, 3, "Please provide access token and path")) return;
+          if (validatedArgument(args, 3, "Please provide both access token and path")) return;
           String locale = null;
           if (args.length >= 4) {
             locale = args[3];
